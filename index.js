@@ -2,7 +2,8 @@
 const fs = require('fs');
 const pathModule = require('path');
 const extMd = '.md';
-const regEx = /\]\((http[^)]+)\)/g
+const regEx = /\]\((http[^)]+)\)/g;
+
 // se creo funcion para luego en la funcion principal pueda ser llamada
 //esta funcion verifica si es un directorio
 const isDirectory = (path) => {
@@ -30,9 +31,10 @@ const printFile = (filename) => {
         reject(err)
       } else {
         let arrayLinks = [];
-        const dataAsString = data.toString();
-        const allLink = dataAsString.match(regEx);
+        const dataAString = data.toString();
+        const allLink = dataAString.match(regEx);
         allLink.forEach(e => {
+          console.log('match dentro del forEach', e)
           arrayLinks.push(e.replace(/[\[\(\)\]]/g, ''))
         })
         resolve(arrayLinks)
@@ -57,11 +59,11 @@ if(isDirectory(path)){
             }else{
               linksMalo.push(link)
             }
-            console.log({linksBueno})
-            console.log({linksMalo})
+            // console.log({linksBueno})
+            // console.log({linksMalo})
           })
     
-          console.log(links);
+          // console.log(links);
         }).catch(err => console.log(err))
       }
     })
@@ -72,7 +74,7 @@ if(isDirectory(path)){
 // PASO 1 : Lectura de parametro process.argv[2]
 // Declarando variable parameterType y asignamos lo que envia la terminal
 const parameterType = process.argv[2];
-console.log(parameterType)
+// console.log(parameterType)
 //usamos el modulo fs e invoco el metodo lstatSync
 const valor = fs.lstatSync(parameterType).isDirectory();
 console.log('Es un directorio : ' + valor);
