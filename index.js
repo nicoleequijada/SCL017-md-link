@@ -48,8 +48,20 @@ if(isDirectory(path)){
   readFolder(path).then(files => {
     files.forEach(file => {
       if (pathModule.extname(file) === extMd) {
-        printFile(file).then(archivo => {
-          console.log(archivo);
+        printFile(file).then(links => {
+          let linksBueno = [];
+          let linksMalo = [];
+          links.forEach(link =>{
+            if(isValidUrl(link)){
+              linksBueno.push(link)
+            }else{
+              linksMalo.push(link)
+            }
+            console.log({linksBueno})
+            console.log({linksMalo})
+          })
+    
+          console.log(links);
         }).catch(err => console.log(err))
       }
     })
@@ -66,3 +78,12 @@ const valor = fs.lstatSync(parameterType).isDirectory();
 console.log('Es un directorio : ' + valor);
 module.exports.mdLinks = mdLinks(parameterType)
 
+const isValidUrl = (url) => {
+  try {
+    new URL(url);
+  } catch (e) {
+    console.error(e);
+    return false;
+  }
+  return true;
+};
