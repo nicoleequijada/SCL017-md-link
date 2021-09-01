@@ -1,15 +1,16 @@
 //declarando constantes e importando los modulos de node
 const fs = require('fs');
 const pathModule = require('path');
-const EXTENSION_MD = '.md';
-//creo funcion para luego en la funcion principal pueda ser llamada
+const extMd = '.md';
+const regEx = /\]\((http[^)]+)\)/g
+// se creo funcion para luego en la funcion principal pueda ser llamada
 //esta funcion verifica si es un directorio
 const isDirectory = (path) => {
   //usamos el modulo fs e invoco el metodo lstatSync
   const value = fs.lstatSync(parameterType).isDirectory();
   return value;
 }
-//esta funcion se encarga de leer directorios
+//esta funcion se encarga de leer directorios o carpetas
 const readFolder = (location) => {
   return new Promise((resolve, reject) => {
     fs.readdir(location, (err, files) => {
@@ -28,19 +29,25 @@ const printFile = (filename) => {
       if (err) {
         reject(err)
       } else {
+        let arrayLinks = [];
         const dataAsString = data.toString();
-        resolve(dataAsString)
+        const allLink = dataAsString.match(regEx);
+        allLink.forEach(e => {
+          arrayLinks.push(e.replace(/[\[\(\)\]]/g, ''))
+        })
+        resolve(arrayLinks)
       }
     })
   })
 };
-//funcion principal md link verifica si los enlaces estan buenos
+
+//funcion para leer archivos MD
 const mdLinks = (path) => {
   console.log('imprimiendo el path', path)
 if(isDirectory(path)){
   readFolder(path).then(files => {
     files.forEach(file => {
-      if (pathModule.extname(file) === EXTENSION_MD) {
+      if (pathModule.extname(file) === extMd) {
         printFile(file).then(archivo => {
           console.log(archivo);
         }).catch(err => console.log(err))
@@ -57,7 +64,5 @@ console.log(parameterType)
 //usamos el modulo fs e invoco el metodo lstatSync
 const valor = fs.lstatSync(parameterType).isDirectory();
 console.log('Es un directorio : ' + valor);
-// const filename = 'Users/nicolequijada/Documents/GitHub/SCL017-md-link';
 module.exports.mdLinks = mdLinks(parameterType)
 
-        
