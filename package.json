@@ -2,7 +2,8 @@
   "name": "md-links",
   "version": "0.1.0",
   "scripts": {
-    "eslint": "eslint --ext .js ./ test/"
+    "eslint": "eslint --ext .js ./",
+    "validate-urls": "node index.js"
   },
   "devDependencies": {
     "eslint": "^7.32.0",
@@ -10,6 +11,8 @@
     "eslint-plugin-import": "^2.24.2"
   },
   "dependencies": {
-    "jest": "^27.1.0"
-  }
+    "jest": "^27.1.0",
+    "node-fetch": "^3.0.0"
+  },
+  "type":"module"
 }
